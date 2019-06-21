@@ -5,7 +5,6 @@ namespace Model
     public class ModelContext : DbContext
     {
         public ModelContext() : base("name=TaxesModelContext")
-        //public TimeRegContext() : base("TimeRegDb")
         {
         }
 
