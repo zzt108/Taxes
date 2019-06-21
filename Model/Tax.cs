@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public enum TaxTypeEnum
 {
@@ -14,7 +15,10 @@ namespace Model
     {
         public int Id { get; set; }
         public TaxTypeEnum TaxType { get; set; }
+        [ForeignKey("Municipality_Id")]
         public Municipality Municipality { get; set; }
+        public int Municipality_Id { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public float Amount { get; set; }
