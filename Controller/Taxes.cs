@@ -12,7 +12,7 @@ namespace Controller
         public static int GetMunicipalityId(IEnumerable<Municipality> municipalities, string name)
         {
             var first = municipalities.FirstOrDefault(municipality => municipality.Name.ToLower() == name.ToLower());
-            return first?.Id ?? 0;        // zero id is not possible. better performance than throwing an error
+            return first?.Id ?? 0;        // zero id is not possible. better performance than throwing an exception
         }
     }
 
