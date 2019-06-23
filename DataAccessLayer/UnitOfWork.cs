@@ -3,7 +3,7 @@ using Model;
 
 namespace DataAccessLayer
 {
-    public class UnitOfWork : IDisposable
+    public sealed class UnitOfWork : IDisposable
     {
         private readonly TaxesContext _context = new TaxesContext();
         private GenericRepository<Municipality> _municipalityRepository;
@@ -30,7 +30,8 @@ namespace DataAccessLayer
         {
             _context.SaveChanges();
         }
-        protected virtual void Dispose(bool disposing)
+
+        private void Dispose(bool disposing)
         {
             if (!this._disposed)
             {

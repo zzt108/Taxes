@@ -14,17 +14,19 @@ namespace TestController
             Console.WriteLine(AppContext.BaseDirectory);
 
             // Create context object and then save company data.
-            var uw = new UnitOfWork();
-            var user = uw.MunicipalityRepository.GetById(1);
+            using (var uw = new UnitOfWork())
+            {
+                var user = uw.MunicipalityRepository.GetById(1);
 
-            if (user == null)
-            {
-                Console.WriteLine("Municipality with ID 1 is not found, generating base data");
-                GenerateData(uw);
-            }
-            else
-            {
-                Console.WriteLine("Municipality with ID 1 found");
+                if (user == null)
+                {
+                    Console.WriteLine("Municipality with ID 1 is not found, generating base data");
+                    GenerateData(uw);
+                }
+                else
+                {
+                    Console.WriteLine("Municipality with ID 1 found");
+                }
             }
         }
 

@@ -12,24 +12,28 @@ namespace Controller
     {
         public static float GetTax(string municipality, DateTime date)
         {
-            var uw = new UnitOfWork();
-            var id = Municipalities.GetMunicipalityId(uw.MunicipalityRepository, municipality);
-            if (id==0)
+            using (var uw = new UnitOfWork())
             {
-                throw new ArgumentException($"Municipality {municipality} not found!");
+                var id = Municipalities.GetMunicipalityId(uw.MunicipalityRepository, municipality);
+                if (id==0)
+                {
+                    throw new ArgumentException($"Municipality {municipality} not found!");
+                }
+                return GetTax(id, date);
             }
-            return GetTax(id, date);
         }
 
         public static float GetTax(int municipalityId, DateTime date)
         {
-            var uw = new UnitOfWork();
-            var tax = uw.TaxRepository.Get(t => t.Municipality_Id == municipalityId).OrderBy(tt => tt.TaxType).FirstOrDefault(t =>t.IsDateValid(date));
-            if (tax == null)
+            using (var uw = new UnitOfWork())
             {
-                throw new ArgumentException($"Tax data for {date} not found!");
+                var tax = uw.TaxRepository.Get(t => t.Municipality_Id == municipalityId).OrderBy(tt => tt.TaxType).FirstOrDefault(t =>t.IsDateValid(date));
+                if (tax == null)
+                {
+                    throw new ArgumentException($"Tax data for {date} not found!");
+                }
+                return tax.Amount;
             }
-            return tax.Amount;
         }
     }
 }

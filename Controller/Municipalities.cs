@@ -8,7 +8,6 @@ namespace Controller
 {
     public static class Municipalities
     {
-        private static UnitOfWork _unitOfWork = new UnitOfWork();
 
         public static int GetMunicipalityId(GenericRepository<Municipality> municipalities, string name)
         {
@@ -19,11 +18,13 @@ namespace Controller
 
         public static void AddMunicipality(Municipality municipality)
         {
-            var uw = new UnitOfWork();
-            if (0 == GetMunicipalityId(uw.MunicipalityRepository, municipality.Name))
+            using (var uw = new UnitOfWork())
             {
-                uw.MunicipalityRepository.Add(municipality);
-                uw.SaveChanges();
+                if (0 == GetMunicipalityId(uw.MunicipalityRepository, municipality.Name))
+                {
+                    uw.MunicipalityRepository.Add(municipality);
+                    uw.SaveChanges();
+                }
             }
         }
     }
