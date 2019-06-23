@@ -29,9 +29,18 @@ namespace TaxesService
             Get(path, _ => GetTax(_));
             Post("/", _ =>
             {
-                var model = this.Bind<Tax>();
-                Taxes.Add(model);
-                return model;
+                try
+                {
+                    var model = this.Bind<Tax>();
+                    Taxes.Add(model);
+                    return model;
+                }
+                catch (Exception e)
+                {
+                    var r = (Response) $"[{e.Message}]";
+                    r.StatusCode = HttpStatusCode.InternalServerError;
+                    return r;
+                }
             });
         }
 
@@ -48,7 +57,9 @@ namespace TaxesService
             }
             catch (Exception e)
             {
-                return $"[{_}] [{e.Message}]";
+                var r = (Response) $"[{e.Message}]";
+                r.StatusCode = HttpStatusCode.InternalServerError;
+                return r;
             }
 
             try
@@ -57,7 +68,9 @@ namespace TaxesService
             }
             catch (Exception e)
             {
-                return $"[{string.Join("|", _)}] [{e.Message}]";
+                var r = (Response) $"[{e.Message}]";
+                r.StatusCode = HttpStatusCode.InternalServerError;
+                return r;
             }
         }
     }

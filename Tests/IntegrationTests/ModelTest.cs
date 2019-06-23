@@ -3,7 +3,7 @@ using DataAccessLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;
 
-namespace TestController
+namespace IntegrationTest
 {
     [TestClass]
     public class ModelTest

@@ -9,8 +9,8 @@
     <ProjectGuid>{593E417F-56E8-4511-BDA0-8FBC3BAF4017}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>testController</RootNamespace>
-    <AssemblyName>testController</AssemblyName>
+    <RootNamespace>IntegrationTest</RootNamespace>
+    <AssemblyName>IntegrationTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -40,6 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.9.8.1, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AngleSharp.0.9.8.1\lib\net45\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -49,16 +52,28 @@
     <Reference Include="FluentAssertions, Version=5.7.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.5.7.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MSTest.TestFramework.1.4.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MSTest.TestFramework.1.4.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.2.0.0\lib\net452\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Authentication.Forms, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Authentication.Forms.2.0.0\lib\net452\Nancy.Authentication.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Testing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Testing.2.0.0\lib\net452\Nancy.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -69,6 +84,7 @@
     <Compile Include="ControllerTest.cs" />
     <Compile Include="ModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NancyFxTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,6 +102,10 @@
     <ProjectReference Include="..\..\Model\Model.csproj">
       <Project>{594ce0b6-846a-487d-82a4-d8d8a7750c6a}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TaxesService\TaxesService.csproj">
+      <Project>{07fbbadf-f9f7-4f48-bbf9-510fbdb2edfd}</Project>
+      <Name>TaxesService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

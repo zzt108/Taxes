@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using DataAccessLayer;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
 
-namespace TestController
+namespace IntegrationTest
 {
     [TestClass]
     public class ControllerTest
