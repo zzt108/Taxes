@@ -76,6 +76,16 @@ namespace TaxesClient
 
                 try
                 {
+
+                    var tax1 = await GetTaxAsync("/tax/vilnius/2016/1/1");
+                    ShowTax(tax1);
+                    tax1 = await GetTaxAsync("/tax/vilnius/2016/5/2");
+                    ShowTax(tax1);
+                    tax1 = await GetTaxAsync("/tax/vilnius/2016/7/10");
+                    ShowTax(tax1);
+                    tax1 = await GetTaxAsync("/tax/vilnius/2016/3/16");
+                    ShowTax(tax1);
+
                     // Create a new tax
                     Tax tax = new Tax
                     {

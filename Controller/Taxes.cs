@@ -12,15 +12,12 @@ namespace Controller
     {
         public static float GetTax(string municipality, DateTime date)
         {
-            using (var uw = new UnitOfWork())
-            {
-                var id = Municipalities.GetMunicipalityId(municipality);
-                if (id==0)
+                var m = Municipalities.GetByName(municipality);
+                if (m == null)
                 {
                     throw new ArgumentException($"Municipality {municipality} not found!");
                 }
-                return GetTax(id, date);
-            }
+                return GetTax(m.Id, date);
         }
 
         public static float GetTax(int municipalityId, DateTime date)
