@@ -1,10 +1,11 @@
 ﻿using System.Data.Entity;
+using Model;
 
-namespace Model
+namespace DataAccessLayer
 {
-    public class ModelContext : DbContext
+    public class TaxesContext : DbContext
     {
-        public ModelContext() : base("name=TaxesModelContext")
+        public TaxesContext() : base("name=TaxesModelContext")
         {
         }
 

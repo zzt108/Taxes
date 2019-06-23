@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModel", "Tests\TestMode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Tests\IntegrationTests\IntegrationTests.csproj", "{593E417F-56E8-4511-BDA0-8FBC3BAF4017}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxesService", "TaxesService\TaxesService.csproj", "{07FBBADF-F9F7-4F48-BBF9-510FBDB2EDFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,14 @@ Global
 		{593E417F-56E8-4511-BDA0-8FBC3BAF4017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{593E417F-56E8-4511-BDA0-8FBC3BAF4017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{593E417F-56E8-4511-BDA0-8FBC3BAF4017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07FBBADF-F9F7-4F48-BBF9-510FBDB2EDFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07FBBADF-F9F7-4F48-BBF9-510FBDB2EDFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07FBBADF-F9F7-4F48-BBF9-510FBDB2EDFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07FBBADF-F9F7-4F48-BBF9-510FBDB2EDFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
