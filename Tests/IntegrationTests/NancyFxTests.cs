@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Model;
 using Nancy;
 using Nancy.Testing;
 using TaxesService;
@@ -31,44 +32,52 @@ namespace IntegrationTest
         public void CanGetHappyPathValues()
         {
             // Given
-            var browser = new Browser(with => with.Module<TaxModule>());
+            var browser = new Browser(with =>
+            {
+                with.Module<TaxModule>();
+            });
 
             // When
             var result = browser.Get("/tax/vilnius/2016/1/1", with =>
             {
                 with.HttpRequest();
+                with.Header("accept", "application/json");
             });
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Body.AsString().Should().Be("0.1");
+            var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+
             // When
             result = browser.Get("/tax/vilnius/2016/5/2", with =>
             {
                 with.HttpRequest();
+                with.Header("accept", "application/json");
             });
             response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Body.AsString().Should().Be("0.4");
+            response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.4f);
             // When
             result = browser.Get("/tax/vilnius/2016/7/10", with =>
             {
                 with.HttpRequest();
+                with.Header("accept", "application/json");
             });
             response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Body.AsString().Should().Be("0.2");
+            response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.2f);
             // When
             result = browser.Get("/tax/vilnius/2016/3/16", with =>
             {
                 with.HttpRequest();
+                with.Header("accept", "application/json");
             });
             response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Body.AsString().Should().Be("0.2");
+            response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.2f);
         }
 
         [TestMethod]

@@ -113,7 +113,7 @@ namespace TaxesClient
                 ShowTax(tax);
 
                 // Update the tax
-                Console.WriteLine("Updating price...");
+                Console.WriteLine("Updating amount...");
                 tax.Amount = 0.3f;
                 tax = UpdateTaxAsync(tax).Result;
                 ShowTax(tax);

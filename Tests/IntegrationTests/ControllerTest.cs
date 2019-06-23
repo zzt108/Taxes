@@ -22,10 +22,10 @@ namespace IntegrationTest
         [TestMethod]
         public void CanGetTaxValue()
         {
-            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,1,1)).Should().Be(0.1f);
-            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,5,2)).Should().Be(0.4f);
-            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,7,10)).Should().Be(0.2f);
-            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,3,16)).Should().Be(0.2f);
+            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,1,1)).Amount.Should().Be(0.1f);
+            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,5,2)).Amount.Should().Be(0.4f);
+            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,7,10)).Amount.Should().Be(0.2f);
+            Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,3,16)).Amount.Should().Be(0.2f);
         }
 
     }
