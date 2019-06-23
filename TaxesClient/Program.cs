@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -19,34 +20,45 @@ namespace TaxesClient
 
             static void ShowTax(Tax tax)
             {
-                Console.WriteLine($"Name: {tax.Municipality.Name}\t{tax.TaxType.ToString()}\tDate: {tax.StartDate}-{tax.EndDate}\tAmount:{tax.Amount}");
+                Console.WriteLine($"Name: {tax.Municipality_Id}\t{tax.TaxType.ToString()}\tDate: {tax.StartDate}-{tax.EndDate}\tAmount:{tax.Amount}");
             }
 
             static async Task<Uri> CreateTaxAsync(Tax tax)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(
-                    "/", tax);
+                    "/tax/add", tax);
                 response.EnsureSuccessStatusCode();
 
                 // return URI of the created resource.
                 return response.Headers.Location;
             }
 
-            static async Task<Tax> GetTaxAsync(string path)
+            static async Task<List<Municipality>> GetMunicipalitiesAsync(string path)
             {
-                Tax product = null;
+                List<Municipality> municipalities = null;
                 HttpResponseMessage response = await client.GetAsync(path);
                 if (response.IsSuccessStatusCode)
                 {
-                    product = await response.Content.ReadAsAsync<Tax>();
+                    municipalities = await response.Content.ReadAsAsync<List<Municipality>>();
                 }
-                return product;
+                return municipalities;
+            }
+
+            static async Task<Tax> GetTaxAsync(string path)
+            {
+                Tax tax = null;
+                HttpResponseMessage response = await client.GetAsync(path);
+                if (response.IsSuccessStatusCode)
+                {
+                    tax = await response.Content.ReadAsAsync<Tax>();
+                }
+                return tax;
             }
 
             static async Task<Tax> UpdateTaxAsync(Tax tax)
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(
-                    $"/{tax.Id}", tax);
+                    $"/tax/{tax.Id}", tax);
                 response.EnsureSuccessStatusCode();
 
                 // Deserialize the updated tax from the response body.
@@ -57,16 +69,11 @@ namespace TaxesClient
             static async Task<HttpStatusCode> DeleteTaxAsync(int id)
             {
                 HttpResponseMessage response = await client.DeleteAsync(
-                    $"/{id}");
+                    $"/tax/{id}");
                 return response.StatusCode;
             }
 
             static void Main()
-            {
-                RunAsync().GetAwaiter().GetResult();
-            }
-
-            static async Task RunAsync()
             {
                 // Update port # in the following line.
                 client.BaseAddress = new Uri("http://localhost:8080/");
@@ -77,44 +84,47 @@ namespace TaxesClient
                 try
                 {
 
-                    var tax1 = await GetTaxAsync("/tax/vilnius/2016/1/1");
-                    ShowTax(tax1);
-                    tax1 = await GetTaxAsync("/tax/vilnius/2016/5/2");
-                    ShowTax(tax1);
-                    tax1 = await GetTaxAsync("/tax/vilnius/2016/7/10");
-                    ShowTax(tax1);
-                    tax1 = await GetTaxAsync("/tax/vilnius/2016/3/16");
-                    ShowTax(tax1);
+                    var tax1 = GetTaxAsync("/tax/vilnius/2016/1/1");
+                    ShowTax(tax1.Result);
+                    tax1 = GetTaxAsync("/tax/vilnius/2016/5/2");
+                    ShowTax(tax1.Result);
+                    tax1 = GetTaxAsync("/tax/vilnius/2016/7/10");
+                    ShowTax(tax1.Result);
+                    tax1 = GetTaxAsync("/tax/vilnius/2016/3/16");
+                    ShowTax(tax1.Result);
 
-                    // Create a new tax
-                    Tax tax = new Tax
-                    {
-                        Municipality = new Municipality() { Name = "New York" },
-                        StartDate = new DateTime(2017, 1, 1),
-                        EndDate = new DateTime(2017, 12, 31),
-                        Amount = 0.15f,
-                        TaxType = TaxTypeEnum.Yearly
-                    };
+                    var municipalities = GetMunicipalitiesAsync("/municipality").Result;
 
-                    var url = await CreateTaxAsync(tax);
-                    Console.WriteLine($"Created at {url}");
+                // Create a new tax
+                Tax tax = new Tax
+                {
+                    Municipality_Id = municipalities[1].Id,
+                    StartDate = new DateTime(2017, 1, 1),
+                    EndDate = new DateTime(2017, 12, 31),
+                    Amount = 0.15f,
+                    TaxType = TaxTypeEnum.Yearly
+                };
 
-                    // Get the tax
-                    tax = await GetTaxAsync(url.PathAndQuery);
-                    ShowTax(tax);
+                var url = CreateTaxAsync(tax).Result;
+                Console.WriteLine($"Created at {url}");
 
-                    // Update the tax
-                    Console.WriteLine("Updating price...");
-                    tax.Amount = 0.3f;
-                    await UpdateTaxAsync(tax);
+                // Get the tax
+                tax = GetTaxAsync(url.ToString()).Result;
+                ShowTax(tax);
 
-                    // Get the updated tax
-                    tax = await GetTaxAsync(url.PathAndQuery);
-                    ShowTax(tax);
+                // Update the tax
+                Console.WriteLine("Updating price...");
+                tax.Amount = 0.3f;
+                tax = UpdateTaxAsync(tax).Result;
+                ShowTax(tax);
 
-                    // Delete the tax
-                    var statusCode = await DeleteTaxAsync(tax.Id);
-                    Console.WriteLine($"Deleted (HTTP Status = {(int)statusCode})");
+                // Get the updated tax
+                tax = GetTaxAsync(url.ToString()).Result;
+                ShowTax(tax);
+
+                // Delete the tax
+                var statusCode = DeleteTaxAsync(tax.Id).Result;
+                Console.WriteLine($"Deleted (HTTP Status = {(int)statusCode})");
 
                 }
                 catch (Exception e)
@@ -123,6 +133,7 @@ namespace TaxesClient
                 }
 
                 Console.ReadLine();
+
             }
         }
     }

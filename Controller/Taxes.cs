@@ -10,7 +10,7 @@ namespace Controller
 {
     public static class Taxes
     {
-        public static float GetTax(string municipality, DateTime date)
+        public static Tax GetTax(string municipality, DateTime date)
         {
                 var m = Municipalities.GetByName(municipality);
                 if (m == null)
@@ -20,7 +20,7 @@ namespace Controller
                 return GetTax(m.Id, date);
         }
 
-        public static float GetTax(int municipalityId, DateTime date)
+        public static Tax GetTax(int municipalityId, DateTime date)
         {
             using (var uw = new UnitOfWork())
             {
@@ -29,7 +29,7 @@ namespace Controller
                 {
                     throw new ArgumentException($"Tax data for {date} not found!");
                 }
-                return tax.Amount;
+                return tax;
             }
         }
 

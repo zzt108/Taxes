@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nancy;
 using Nancy.Testing;
+using TaxesService;
 using TaxesService.NancyFX;
 
 namespace IntegrationTest

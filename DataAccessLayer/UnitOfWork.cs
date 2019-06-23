@@ -10,21 +10,9 @@ namespace DataAccessLayer
         private GenericRepository<Tax> _taxRepository;
         private bool _disposed;
 
-        public GenericRepository<Municipality> MunicipalityRepository
-        {
-            get
-            {
-                return this._municipalityRepository ?? (_municipalityRepository = new GenericRepository<Municipality>(_context));
-            }
-        }
+        public GenericRepository<Municipality> MunicipalityRepository => _municipalityRepository ?? (_municipalityRepository = new GenericRepository<Municipality>(_context));
 
-        public GenericRepository<Tax> TaxRepository
-        {
-            get
-            {
-                return this._taxRepository ?? (_taxRepository = new GenericRepository<Tax>(_context));
-            }
-        }
+        public GenericRepository<Tax> TaxRepository => _taxRepository ?? (_taxRepository = new GenericRepository<Tax>(_context));
 
         public void SaveChanges()
         {
@@ -33,14 +21,14 @@ namespace DataAccessLayer
 
         private void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
         public void Dispose()
         {
