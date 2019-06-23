@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nancy;
 using Nancy.Testing;
+using TaxesService.NancyFX;
 
 namespace IntegrationTest
 {
@@ -13,7 +14,7 @@ namespace IntegrationTest
         public void CanAccessNancy()
         {
             // Given
-            var browser = new Browser(with => with.Module<TaxesService.MainModule>());
+            var browser = new Browser(with => with.Module<MainModule>());
 
             // When
             var result = browser.Get("/", with =>
@@ -29,7 +30,7 @@ namespace IntegrationTest
         public void CanGetHappyPathValues()
         {
             // Given
-            var browser = new Browser(with => with.Module<TaxesService.TaxModule>());
+            var browser = new Browser(with => with.Module<TaxModule>());
 
             // When
             var result = browser.Get("/tax/vilnius/2016/1/1", with =>
@@ -46,7 +47,7 @@ namespace IntegrationTest
         public void NoTaxData()
         {
             // Given
-            var browser = new Browser(with => with.Module<TaxesService.TaxModule>());
+            var browser = new Browser(with => with.Module<TaxModule>());
 
             // When
             var result = browser.Get("/tax/taastrup/2016/1/1", with =>

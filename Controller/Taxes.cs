@@ -14,7 +14,7 @@ namespace Controller
         {
             using (var uw = new UnitOfWork())
             {
-                var id = Municipalities.GetMunicipalityId(uw.MunicipalityRepository, municipality);
+                var id = Municipalities.GetMunicipalityId(municipality);
                 if (id==0)
                 {
                     throw new ArgumentException($"Municipality {municipality} not found!");

@@ -13,8 +13,8 @@ namespace IntegrationTest
         {
             using(var uw = new UnitOfWork()  )
             {
-                Controller.Municipalities.GetMunicipalityId(uw.MunicipalityRepository, "Vilnius").Should().Be(1);
-                Controller.Municipalities.GetMunicipalityId(uw.MunicipalityRepository, "vilnius").Should().Be(1);
+                Controller.Municipalities.GetMunicipalityId("Vilnius").Should().Be(1);
+                Controller.Municipalities.GetMunicipalityId("vilnius").Should().Be(1);
             }
         }
 
