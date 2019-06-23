@@ -35,5 +35,15 @@ namespace Controller
                 return tax.Amount;
             }
         }
+
+        public static void Add(Tax tax)
+        {
+            using (var uw = new UnitOfWork())
+            {
+                uw.TaxRepository.Add(tax);
+                uw.SaveChanges();
+            }
+
+        }
     }
 }

@@ -8,6 +8,7 @@ using Controller;
 using Model;
 using Nancy;
 using Nancy.Hosting.Self;
+using Nancy.ModelBinding;
 
 namespace TaxesService
 {
@@ -25,31 +26,39 @@ namespace TaxesService
         {
             var path = "/{municipality}/{year}/{month}/{day}";
             Get("/",_ => $"Usage:/tax{path}");
-            Get(path, _ =>
+            Get(path, _ => GetTax(_));
+            Post("/", _ =>
             {
-                int year;
-                int month;
-                int day;
-                try
-                {
-                    year = int.Parse(_.year);
-                    month = int.Parse(_.month);
-                    day = int.Parse(_.day);
-                }
-                catch (Exception e)
-                {
-                    return $"[{_}] [{e.Message}]";
-                }
-
-                try
-                {
-                    return Taxes.GetTax( _.municipality.ToString(), new DateTime(year, month, day)).ToString();
-                }
-                catch (Exception e)
-                {
-                    return $"[{string.Join("|",_)}] [{e.Message}]";
-                }
+                var model = this.Bind<Tax>();
+                Taxes.Add(model);
+                return model;
             });
+        }
+
+        private static object GetTax(dynamic _)
+        {
+            int year;
+            int month;
+            int day;
+            try
+            {
+                year = int.Parse(_.year);
+                month = int.Parse(_.month);
+                day = int.Parse(_.day);
+            }
+            catch (Exception e)
+            {
+                return $"[{_}] [{e.Message}]";
+            }
+
+            try
+            {
+                return Taxes.GetTax(_.municipality.ToString(), new DateTime(year, month, day)).ToString();
+            }
+            catch (Exception e)
+            {
+                return $"[{string.Join("|", _)}] [{e.Message}]";
+            }
         }
     }
 
