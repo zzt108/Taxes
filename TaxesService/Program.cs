@@ -43,7 +43,7 @@ namespace TaxesService
 
                 try
                 {
-                    return Taxes.GetTax( _.municipality, new DateTime(year, month, day)).ToString();
+                    return Taxes.GetTax( _.municipality.ToString(), new DateTime(year, month, day)).ToString();
                 }
                 catch (Exception e)
                 {
@@ -62,7 +62,8 @@ namespace TaxesService
         {
             NancyHost host;
             string url = "http://localhost:8080";
-            host = new NancyHost(new Uri(url));
+            HostConfiguration hostConfigs = new HostConfiguration {UrlReservations = {CreateAutomatically = true}};
+            host = new NancyHost(new Uri(url), new DefaultNancyBootstrapper(), hostConfigs);
             host.Start();
 
             //Debug code
