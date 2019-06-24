@@ -81,6 +81,74 @@ namespace IntegrationTest
         }
 
         [TestMethod]
+        public void CanGetTaxById()
+        {
+            // Given
+            var browser = new Browser(with =>
+            {
+                with.Module<TaxModule>();
+            });
+
+            // When
+            var result = browser.Get("/tax/id/1", with =>
+            {
+                with.HttpRequest();
+                with.Header("accept", "application/json");
+            });
+            var response = result.Result;
+            // Then
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+
+        }
+
+        [TestMethod]
+        public void CanExport()
+        {
+            // Given
+            var browser = new Browser(with =>
+            {
+                with.Module<TaxModule>();
+            });
+
+            // When
+            var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
+            var result = browser.Get($"/tax/export?path={path}", with =>
+            {
+                with.HttpRequest();
+                with.Header("accept", "application/json");
+            });
+            var response = result.Result;
+            // Then
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            //var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+
+        }
+
+        //[TestMethod]
+        public void CanImport()
+        {
+            // Given
+            var browser = new Browser(with =>
+            {
+                with.Module<TaxModule>();
+            });
+
+            // When
+            var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
+            var result = browser.Get($"/tax/import?path={path}", with =>
+            {
+                with.HttpRequest();
+                with.Header("accept", "application/json");
+            });
+            var response = result.Result;
+            // Then
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            //var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+
+        }
+
+        [TestMethod]
         public void NoTaxData()
         {
             // Given

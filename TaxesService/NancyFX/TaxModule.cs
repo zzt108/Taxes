@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Controller;
 using DataAccessLayer;
 using Model;
@@ -10,9 +11,54 @@ namespace TaxesService.NancyFX
 {
     public sealed class TaxModule : NancyModule
     {
+        public class RequestObject
+        {
+            public int Id;
+            public string Path;
+            public string Municipality;
+            public int Year;
+            public int Month;
+            public int Day;
+        }
+
         public TaxModule()   :base("/tax")
         {
+            Get("/export", _ =>
+            {
+                try
+                {
+                    var request = this.Bind<RequestObject>();
+                    if (string.IsNullOrWhiteSpace(request.Path))
+                    {
+                        return Helper.ErrorResponse(new ArgumentNullException("path","Please specify destination file as query parameter"), HttpStatusCode.BadRequest);
+                    }
+                    Taxes.ExportTax(request.Path, new UnitOfWork().TaxRepository.Get(tax => true));
+                    return HttpStatusCode.OK;
+                }
+                catch (Exception e)
+                {
+                    return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
+                }
+            });
+            Get("/import", _ =>
+            {
+                try
+                {
+                    var request = this.Bind<RequestObject>();
+                    if (string.IsNullOrWhiteSpace(request.Path))
+                    {
+                        return Helper.ErrorResponse(new ArgumentNullException("path","Please specify source file as query parameter"), HttpStatusCode.BadRequest);
+                    }
+                    Taxes.ImportTax(request.Path, new UnitOfWork().MunicipalityRepository.Get(tax => true));
+                    return HttpStatusCode.OK;
+                }
+                catch (Exception e)
+                {
+                    return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
+                }
+            });
             Get("/id/{id}", _ => GetTaxById(_));
+            Get("/{municipality}/{year}/{month}/{day}", _ => GetTax(_));
             Get("/{municipality}/{year}/{month}/{day}", _ => GetTax(_));
             Post("/add", _ =>
             {
@@ -39,25 +85,12 @@ namespace TaxesService.NancyFX
             {
                 try
                 {
+                    var request = this.Bind<RequestObject>();
                     var model = this.Bind<Tax>();
-                    //model.Municipality_Id = Municipalities.GetByName(model.Municipality.Name)?.Id;
                     using (var uw = new UnitOfWork())
                     {
-                        int id = _.id;
-                        if (uw.TaxRepository.GetById(id) is Tax tax)
-                        {
-                            tax.Amount = model.Amount;
-                            tax.EndDate = model.EndDate;
-                            tax.Municipality_Id = model.Municipality_Id;
-                            tax.StartDate = model.StartDate;
-                            tax.TaxType = model.TaxType;
-                            uw.SaveChanges();
-                        }
-                        else
-                        {
-                            return Helper.ErrorResponse(new ArgumentException($"{id} not found"),
-                                HttpStatusCode.InternalServerError);
-                        }
+                        Taxes.UpdateTax(uw, request.Id, model);
+                        uw.SaveChanges();
                     }
                     return model;
                 }
@@ -72,8 +105,8 @@ namespace TaxesService.NancyFX
                 {
                     using (var uw = new UnitOfWork())
                     {
-                        int id = _.id;
-                        uw.TaxRepository.Delete(id);
+                        var request = this.Bind<RequestObject>();
+                        uw.TaxRepository.Delete(request.Id);
                         uw.SaveChanges();
                     }
                     return HttpStatusCode.NoContent;
@@ -87,8 +120,16 @@ namespace TaxesService.NancyFX
 
         private object GetTaxById(dynamic _)
         {
-            int id = _.id;
-            return new UnitOfWork().TaxRepository.GetById(id);
+            try
+            {
+                var request = this.Bind<RequestObject>();
+                return new UnitOfWork().TaxRepository.GetById(request.Id);
+            }
+            catch (Exception e)
+            {
+                return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
+            }
+
         }
 
         private static object GetTax(dynamic _)

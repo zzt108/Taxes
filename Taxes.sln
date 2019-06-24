@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxesClient", "TaxesClient\TaxesClient.csproj", "{39169A46-D594-4B2C-A012-D1EDE80F051B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportExport", "ImportExport\ImportExport.csproj", "{5BC10900-0D57-4DF6-A9BA-3EDC8246E3A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{39169A46-D594-4B2C-A012-D1EDE80F051B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39169A46-D594-4B2C-A012-D1EDE80F051B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39169A46-D594-4B2C-A012-D1EDE80F051B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BC10900-0D57-4DF6-A9BA-3EDC8246E3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BC10900-0D57-4DF6-A9BA-3EDC8246E3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BC10900-0D57-4DF6-A9BA-3EDC8246E3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BC10900-0D57-4DF6-A9BA-3EDC8246E3A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
