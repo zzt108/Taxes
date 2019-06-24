@@ -9,11 +9,15 @@ namespace ImportExport
     [DelimitedRecord(",")]
     internal class TaxDto
     {
+        public TaxDto()
+        {
+            
+        }
 
         public TaxDto(Tax tax)
         {
             Id = tax.Id;
-            MunicipalityName = tax.Municipality.Name;
+            MunicipalityName = tax.Municipality?.Name;
             MunicipalityId = tax.Municipality_Id;
             TaxType = tax.TaxType;
             StartDate = tax.StartDate;

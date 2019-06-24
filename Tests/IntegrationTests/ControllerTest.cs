@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using DataAccessLayer;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,11 +12,8 @@ namespace IntegrationTest
         [TestMethod]
         public void CanGetMunicipalityId()
         {
-            using(var uw = new UnitOfWork()  )
-            {
                 Controller.Municipalities.GetByName("Vilnius").Id.Should().Be(1);
                 Controller.Municipalities.GetByName("vilnius").Id.Should().Be(1);
-            }
         }
 
 
@@ -27,6 +25,28 @@ namespace IntegrationTest
             Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,7,10)).Amount.Should().Be(0.2f);
             Controller.Taxes.GetTax( "Vilnius", new DateTime(2016,3,16)).Amount.Should().Be(0.2f);
         }
+
+        [TestMethod]
+        public void CanExport()
+        {
+            Controller.Taxes.ExportTax("taxdata.csv", new UnitOfWork().TaxRepository.Get(tax => true));
+        }
+
+        [TestMethod]
+        public void CanImport()
+        {
+            const string taxdataCsv = "taxdata.csv";
+            if (File.Exists(taxdataCsv))
+            {
+                Controller.Taxes.ImportTax(taxdataCsv, new UnitOfWork().MunicipalityRepository.Get(m => true));
+            }
+            else
+            {
+                    Assert.Inconclusive($"{taxdataCsv} does not exist!");
+            }
+        }
+
+
 
     }
 }
