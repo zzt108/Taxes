@@ -102,18 +102,19 @@ namespace IntegrationTest
 
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CanExport()
         {
+            Assert.Inconclusive("Known Nancy Test bug - call returns 404");
             // Given
             var browser = new Browser(with =>
             {
-                with.Module<TaxModule>();
+                with.Module<ExportModule>();
             });
 
             // When
             var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
-            var result = browser.Get($"/tax/export?path={path}", with =>
+            var result = browser.Get($"/export/tax?path={path}", with =>
             {
                 with.HttpRequest();
                 with.Header("accept", "application/json");
@@ -121,22 +122,43 @@ namespace IntegrationTest
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            //var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
 
         }
 
-        //[TestMethod]
-        public void CanImport()
+        [TestMethod]
+        public void CanHandleExportMissingPath()
         {
             // Given
             var browser = new Browser(with =>
             {
-                with.Module<TaxModule>();
+                with.Module<ExportModule>();
+            });
+
+            // When
+            var result = browser.Get($"/export/tax", with =>
+            {
+                with.HttpRequest();
+                with.Header("accept", "application/json");
+            });
+            var response = result.Result;
+            // Then
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        }
+
+        [TestMethod]
+        public void CanImport()
+        {
+            Assert.Inconclusive("Known Nancy Test bug - call returns 404");
+            // Given
+            var browser = new Browser(with =>
+            {
+                with.Module<ImportModule>();
             });
 
             // When
             var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
-            var result = browser.Get($"/tax/import?path={path}", with =>
+            var result = browser.Get($"/import/tax?path={path}", with =>
             {
                 with.HttpRequest();
                 with.Header("accept", "application/json");
@@ -144,7 +166,6 @@ namespace IntegrationTest
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            //var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
 
         }
 

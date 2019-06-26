@@ -55,9 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NancyFX\ExportModule.cs" />
     <Compile Include="NancyFX\Helper.cs" />
+    <Compile Include="NancyFX\ImportModule.cs" />
     <Compile Include="NancyFX\MainModule.cs" />
     <Compile Include="NancyFX\MunicipalityModule.cs" />
+    <Compile Include="NancyFX\RequestObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NancyFX\TaxModule.cs" />

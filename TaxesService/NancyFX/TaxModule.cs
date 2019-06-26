@@ -11,54 +11,10 @@ namespace TaxesService.NancyFX
 {
     public sealed class TaxModule : NancyModule
     {
-        public class RequestObject
-        {
-            public int Id;
-            public string Path;
-            public string Municipality;
-            public int Year;
-            public int Month;
-            public int Day;
-        }
 
-        public TaxModule()   :base("/tax")
+        public TaxModule() : base("/tax")
         {
-            Get("/export", _ =>
-            {
-                try
-                {
-                    var request = this.Bind<RequestObject>();
-                    if (string.IsNullOrWhiteSpace(request.Path))
-                    {
-                        return Helper.ErrorResponse(new ArgumentNullException("path","Please specify destination file as query parameter"), HttpStatusCode.BadRequest);
-                    }
-                    Taxes.ExportTax(request.Path, new UnitOfWork().TaxRepository.Get(tax => true));
-                    return HttpStatusCode.OK;
-                }
-                catch (Exception e)
-                {
-                    return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
-                }
-            });
-            Get("/import", _ =>
-            {
-                try
-                {
-                    var request = this.Bind<RequestObject>();
-                    if (string.IsNullOrWhiteSpace(request.Path))
-                    {
-                        return Helper.ErrorResponse(new ArgumentNullException("path","Please specify source file as query parameter"), HttpStatusCode.BadRequest);
-                    }
-                    Taxes.ImportTax(request.Path, new UnitOfWork().MunicipalityRepository.Get(tax => true));
-                    return HttpStatusCode.OK;
-                }
-                catch (Exception e)
-                {
-                    return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
-                }
-            });
             Get("/id/{id}", _ => GetTaxById(_));
-            Get("/{municipality}/{year}/{month}/{day}", _ => GetTax(_));
             Get("/{municipality}/{year}/{month}/{day}", _ => GetTax(_));
             Post("/add", _ =>
             {
@@ -92,6 +48,7 @@ namespace TaxesService.NancyFX
                         Taxes.UpdateTax(uw, request.Id, model);
                         uw.SaveChanges();
                     }
+
                     return model;
                 }
                 catch (Exception e)
@@ -109,6 +66,7 @@ namespace TaxesService.NancyFX
                         uw.TaxRepository.Delete(request.Id);
                         uw.SaveChanges();
                     }
+
                     return HttpStatusCode.NoContent;
                 }
                 catch (Exception e)
@@ -145,7 +103,7 @@ namespace TaxesService.NancyFX
             }
             catch (Exception e)
             {
-                return Helper.ErrorResponse(e,HttpStatusCode.InternalServerError);
+                return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
             }
 
             try
@@ -154,8 +112,9 @@ namespace TaxesService.NancyFX
             }
             catch (Exception e)
             {
-                return Helper.ErrorResponse(e,HttpStatusCode.InternalServerError);
+                return Helper.ErrorResponse(e, HttpStatusCode.InternalServerError);
             }
         }
     }
+
 }
