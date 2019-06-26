@@ -12,6 +12,8 @@ namespace IntegrationTest
     [TestClass]
     public class NancyFxTests
     {
+        private const string InaccessibleFile = @"c:\taxdata.csv";
+
         [TestMethod]
         public void CanAccessNancy()
         {
@@ -105,7 +107,6 @@ namespace IntegrationTest
         [TestMethod]
         public void CanExport()
         {
-            Assert.Inconclusive("Known Nancy Test bug - call returns 404");
             // Given
             var browser = new Browser(with =>
             {
@@ -113,15 +114,17 @@ namespace IntegrationTest
             });
 
             // When
-            var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
-            var result = browser.Get($"/export/tax?path={path}", with =>
+            var path = System.Web.HttpUtility.UrlEncode(InaccessibleFile);
+            var result = browser.Get($"/export/tax", with =>
             {
                 with.HttpRequest();
                 with.Header("accept", "application/json");
+                //passing query string in url is not supported
+                with.Query("path", path);
             });
             var response = result.Result;
             // Then
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError, $"{InaccessibleFile} access should be denied");
 
         }
 
@@ -149,7 +152,6 @@ namespace IntegrationTest
         [TestMethod]
         public void CanImport()
         {
-            Assert.Inconclusive("Known Nancy Test bug - call returns 404");
             // Given
             var browser = new Browser(with =>
             {
@@ -157,15 +159,17 @@ namespace IntegrationTest
             });
 
             // When
-            var path = System.Web.HttpUtility.UrlEncode(@"c:\taxdata.csv");
-            var result = browser.Get($"/import/tax?path={path}", with =>
+            var path = System.Web.HttpUtility.UrlEncode(InaccessibleFile);
+            var result = browser.Get($"/import/tax", with =>
             {
                 with.HttpRequest();
                 with.Header("accept", "application/json");
+                //passing query string in url is not supported
+                with.Query("path", path);
             });
             var response = result.Result;
             // Then
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError, $"{InaccessibleFile} should not exist"); 
 
         }
 
