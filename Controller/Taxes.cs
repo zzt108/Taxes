@@ -26,7 +26,7 @@ namespace Controller
                 var tax = uw.TaxRepository.Get(t => t.Municipality_Id == municipalityId).OrderBy(tt => tt.TaxType).FirstOrDefault(t => t.IsDateValid(date));
                 if (tax == null)
                 {
-                    throw new ArgumentException($"Tax data for {date} not found!");
+                    throw new ArgumentException($"Tax data not found!");
                 }
                 return tax;
             }

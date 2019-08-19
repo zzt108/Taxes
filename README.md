@@ -16,5 +16,5 @@ Vilnius  				2016.05.02  0.4
 Vilnius  				2016.07.10  0.2
 Vilnius  				2016.03.16  0.2
 
-Please set the **database path** in the app.config connection string in TaxService, TaskClient and Tests\IntegrationTests projects to an appropriate path.
+Please set the **database path** in the app.config connection string in TaxService and Tests\IntegrationTests projects to an appropriate path.
 IntegrationTests contain a test called CreateDb which **creates the database** and adds test data to it.
