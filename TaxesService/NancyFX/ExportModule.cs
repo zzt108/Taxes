@@ -1,6 +1,5 @@
 ﻿using System;
 using Controller;
-using DataAccessLayer;
 using Nancy;
 using Nancy.ModelBinding;
 
@@ -19,7 +18,7 @@ namespace TaxesService.NancyFX
                     {
                         return Helper.ErrorResponse(new ArgumentNullException("path", "Please specify destination file as query parameter"), HttpStatusCode.BadRequest);
                     }
-                    Taxes.ExportTax(request.Path, new UnitOfWork().TaxRepository.Get(tax => true));
+                    Taxes.ExportTax(request.Path);
                     return HttpStatusCode.OK;
                 }
                 catch (Exception e)

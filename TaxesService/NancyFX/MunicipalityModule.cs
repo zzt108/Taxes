@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Controller;
-using DataAccessLayer;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
@@ -34,11 +33,8 @@ namespace TaxesService.NancyFX
         {
             try
             {
-                using (var uw = new UnitOfWork())
-                {
-                    return uw.MunicipalityRepository.Get(municipality => true).ToList();
-                }
-            }
+                return Controller.Municipalities.GetAll();
+             }
             catch (Exception e)
             {
                 return Helper.ErrorResponse(e,HttpStatusCode.InternalServerError);

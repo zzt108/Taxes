@@ -29,7 +29,7 @@ namespace IntegrationTest
         [TestMethod]
         public void CanExport()
         {
-            Controller.Taxes.ExportTax("taxdata.csv", new UnitOfWork().TaxRepository.Get(tax => true));
+            Controller.Taxes.ExportTax("taxdata.csv");
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace IntegrationTest
             const string taxdataCsv = "taxdata.csv";
             if (File.Exists(taxdataCsv))
             {
-                Controller.Taxes.ImportTax(taxdataCsv, new UnitOfWork().MunicipalityRepository.Get(m => true));
+                Controller.Taxes.ImportTax(taxdataCsv);
             }
             else
             {

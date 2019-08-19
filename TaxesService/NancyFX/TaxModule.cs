@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Controller;
-using DataAccessLayer;
 using Model;
 using Nancy;
 using Nancy.ModelBinding;
@@ -21,12 +20,7 @@ namespace TaxesService.NancyFX
                 try
                 {
                     var model = this.Bind<Tax>();
-                    //model.Municipality_Id = Municipalities.GetByName(model.Municipality.Name)?.Id;
-                    using (var uw = new UnitOfWork())
-                    {
-                        uw.TaxRepository.Add(model);
-                        uw.SaveChanges();
-                    }
+                    Controller.Taxes.Add(model);
 
                     var r = Response.AsJson(model).WithHeader("Location", $"/tax/id/{model.Id}");
                     ;
@@ -43,11 +37,7 @@ namespace TaxesService.NancyFX
                 {
                     var request = this.Bind<RequestObject>();
                     var model = this.Bind<Tax>();
-                    using (var uw = new UnitOfWork())
-                    {
-                        Taxes.UpdateTax(uw, request.Id, model);
-                        uw.SaveChanges();
-                    }
+                    Controller.Taxes.UpdateTax(request.Id, model);
 
                     return model;
                 }
@@ -60,12 +50,8 @@ namespace TaxesService.NancyFX
             {
                 try
                 {
-                    using (var uw = new UnitOfWork())
-                    {
-                        var request = this.Bind<RequestObject>();
-                        uw.TaxRepository.Delete(request.Id);
-                        uw.SaveChanges();
-                    }
+                    var request = this.Bind<RequestObject>();
+                    Controller.Taxes.Delete(request.Id);
 
                     return HttpStatusCode.NoContent;
                 }
@@ -81,7 +67,7 @@ namespace TaxesService.NancyFX
             try
             {
                 var request = this.Bind<RequestObject>();
-                return new UnitOfWork().TaxRepository.GetById(request.Id);
+                return Controller.Taxes.GetById(request.Id);
             }
             catch (Exception e)
             {

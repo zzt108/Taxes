@@ -30,6 +30,14 @@ namespace Controller
                 }
             }
         }
+        public static IList<Municipality> GetAll()
+        {
+            using (var uw = new UnitOfWork())
+            {
+                return uw.MunicipalityRepository.Get(municipality => true).ToList();
+            }
+
+        }
 
     }
 }

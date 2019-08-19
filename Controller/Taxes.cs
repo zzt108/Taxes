@@ -32,50 +32,83 @@ namespace Controller
             }
         }
 
-        public static void UpdateTax(UnitOfWork uw, int id, Tax model)
+        public static void Add(Tax model)
         {
-            if (uw.TaxRepository.GetById(id) is Tax tax)
+            using (var uw = new UnitOfWork())
             {
-                tax.Amount = model.Amount;
-                tax.EndDate = model.EndDate;
-                tax.Municipality_Id = model.Municipality_Id;
-                tax.StartDate = model.StartDate;
-                tax.TaxType = model.TaxType;
+                uw.TaxRepository.Add(model);
+                uw.SaveChanges();
             }
         }
 
-
-        public static void ExportTax(string path, IEnumerable<Tax> data)
+        public static void UpdateTax(int id, Tax model)
         {
-            new ExportTax(path).Write(data);
-        }
-
-        public static void ImportTax(string path, IEnumerable<Municipality> municipalities)
-        {
-            var result = new ImportTax(path).Read(municipalities);
             using (var uw = new UnitOfWork())
             {
-                foreach (var tax in result)
+                if (uw.TaxRepository.GetById(id) is Tax tax)
                 {
-                    if (tax.Id == 0)
+                    tax.Amount = model.Amount;
+                    tax.EndDate = model.EndDate;
+                    tax.Municipality_Id = model.Municipality_Id;
+                    tax.StartDate = model.StartDate;
+                    tax.TaxType = model.TaxType;
+                    uw.SaveChanges();
+                }
+            }
+        }
+
+        public static void Delete(int id)
+        {
+            using (var uw = new UnitOfWork())
+            {
+                uw.TaxRepository.Delete(id);
+                uw.SaveChanges();
+            }
+        }
+
+        public static void ExportTax(string path)
+        {
+            using (var uw = new UnitOfWork())
+            {
+                new ExportTax(path).Write(uw.TaxRepository.Get(tax => true));
+            }
+        }
+
+        public static object GetById(int id)
+        {
+            return new UnitOfWork().TaxRepository.GetById(id);
+        }
+
+        public static void ImportTax(string path)
+        {
+            using (var uw = new UnitOfWork())
+            {
+                var municipalities = uw.MunicipalityRepository.Get(tax => true);
+                var result = new ImportTax(path).Read(municipalities);
+                {
+                    foreach (var tax in result)
                     {
-                        uw.TaxRepository.Add(tax);
-                    }
-                    else
-                    {
-                        var existingTax = uw.TaxRepository.GetById(tax.Id);
-                        if (existingTax == null)
+                        if (tax.Id == 0)
                         {
                             uw.TaxRepository.Add(tax);
                         }
                         else
                         {
-                            UpdateTax(uw, tax.Id, tax);
+                            var existingTax = uw.TaxRepository.GetById(tax.Id);
+                            if (existingTax == null)
+                            {
+                                uw.TaxRepository.Add(tax);
+                            }
+                            else
+                            {
+                                UpdateTax(tax.Id, tax);
+                            }
                         }
                     }
+                    uw.SaveChanges();
                 }
-                uw.SaveChanges();
             }
         }
+
     }
 }

@@ -74,10 +74,6 @@
       <Project>{f04ffd15-511d-4b33-b0f7-f4723d854f9d}</Project>
       <Name>Controller</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
-      <Project>{DD8AEFDC-A7E7-4A5B-8644-28081125A4C5}</Project>
-      <Name>DataAccessLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{594ce0b6-846a-487d-82a4-d8d8a7750c6a}</Project>
       <Name>Model</Name>
