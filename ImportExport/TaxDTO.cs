@@ -29,14 +29,14 @@ namespace ImportExport
         {
             var tax = new Tax
             {
-                Id = this.Id ?? 0,
-                Municipality_Id =   this.MunicipalityId??0,
-                TaxType = this.TaxType,
-                StartDate = this.StartDate,
-                EndDate = this.EndDate,
-                Amount = Convert.ToSingle(this.Amount)
+                Id = Id ?? 0,
+                Municipality_Id =   MunicipalityId??0,
+                TaxType = TaxType,
+                StartDate = StartDate,
+                EndDate = EndDate,
+                Amount = Convert.ToSingle(Amount)
             };
-            if (tax.Municipality_Id == 0 && !string.IsNullOrWhiteSpace(this.MunicipalityName) && municipalities != null )
+            if (tax.Municipality_Id == 0 && !string.IsNullOrWhiteSpace(MunicipalityName) && municipalities != null )
             {
                 var m = municipalities.FirstOrDefault(municipality => municipality.Name.ToLower() == MunicipalityName.ToLower());
                 if (m != null)

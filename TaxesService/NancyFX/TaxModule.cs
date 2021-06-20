@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using Controller;
 using Model;
 using Nancy;
@@ -20,10 +18,9 @@ namespace TaxesService.NancyFX
                 try
                 {
                     var model = this.Bind<Tax>();
-                    Controller.Taxes.Add(model);
+                    Taxes.Add(model);
 
                     var r = Response.AsJson(model).WithHeader("Location", $"/tax/id/{model.Id}");
-                    ;
                     return r;
                 }
                 catch (Exception e)
@@ -37,7 +34,7 @@ namespace TaxesService.NancyFX
                 {
                     var request = this.Bind<RequestObject>();
                     var model = this.Bind<Tax>();
-                    Controller.Taxes.UpdateTax(request.Id, model);
+                    Taxes.UpdateTax(request.Id, model);
 
                     return model;
                 }
@@ -51,7 +48,7 @@ namespace TaxesService.NancyFX
                 try
                 {
                     var request = this.Bind<RequestObject>();
-                    Controller.Taxes.Delete(request.Id);
+                    Taxes.Delete(request.Id);
 
                     return HttpStatusCode.NoContent;
                 }
@@ -67,7 +64,7 @@ namespace TaxesService.NancyFX
             try
             {
                 var request = this.Bind<RequestObject>();
-                return Controller.Taxes.GetById(request.Id);
+                return Taxes.GetById(request.Id);
             }
             catch (Exception e)
             {

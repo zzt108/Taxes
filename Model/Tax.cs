@@ -17,6 +17,7 @@ namespace Model
         public TaxTypeEnum TaxType { get; set; }
         [ForeignKey("Municipality_Id")]
         public Municipality Municipality { get; set; }
+        // ReSharper disable once InconsistentNaming
         public int Municipality_Id { get; set; }
 
         public DateTime StartDate { get; set; }

@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;
 using Nancy;
 using Nancy.Testing;
-using TaxesService;
 using TaxesService.NancyFX;
 
 namespace IntegrationTest
@@ -12,7 +11,9 @@ namespace IntegrationTest
     [TestClass]
     public class NancyFxTests
     {
+/*
         private const string InaccessibleFile = @"c:\taxdata.csv";
+*/
 
         [TestMethod]
         public void CanAccessNancy()
@@ -48,7 +49,7 @@ namespace IntegrationTest
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+            response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
 
             // When
             result = browser.Get("/tax/vilnius/2016/5/2", with =>
@@ -100,7 +101,7 @@ namespace IntegrationTest
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var t = response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
+            response.Body.DeserializeJson<Tax>().Amount.Should().Be(0.1f);
 
         }
 
@@ -109,6 +110,7 @@ namespace IntegrationTest
         {
             Assert.Inconclusive("Export Test is not functional");
             // Given
+/*
             var browser = new Browser(with =>
             {
                 with.Module<ExportModule>();
@@ -127,6 +129,7 @@ namespace IntegrationTest
             // Then
             // response.StatusCode.Should().Be(HttpStatusCode.InternalServerError, $"{InaccessibleFile} access should be denied");
             response.StatusCode.Should().Be(HttpStatusCode.OK, $"{InaccessibleFile} access error");
+*/
 
         }
 
@@ -157,6 +160,7 @@ namespace IntegrationTest
             Assert.Inconclusive("Import Test is not functional");
 
             // Given
+/*
             var browser = new Browser(with =>
             {
                 with.Module<ImportModule>();
@@ -174,6 +178,7 @@ namespace IntegrationTest
             var response = result.Result;
             // Then
             response.StatusCode.Should().Be(HttpStatusCode.InternalServerError, $"{InaccessibleFile} should not exist"); 
+*/
 
         }
 

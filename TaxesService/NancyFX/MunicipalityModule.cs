@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Controller;
 using Model;
 using Nancy;
@@ -33,7 +32,7 @@ namespace TaxesService.NancyFX
         {
             try
             {
-                return Controller.Municipalities.GetAll();
+                return Municipalities.GetAll();
              }
             catch (Exception e)
             {

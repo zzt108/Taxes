@@ -1,6 +1,6 @@
 ﻿using Nancy;
 
-namespace TaxesService
+namespace TaxesService.NancyFX
 {
     public sealed class MainModule : NancyModule
     {
